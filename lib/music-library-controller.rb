@@ -36,17 +36,20 @@ class MusicLibraryController
       end
     end
   end
-
   def list_songs
-    Song.all.each_with_index {|song,index|puts  #(index+1). #{song.artist.name} - #{song.name} - #{song.genre.name}"}
+    Song.all.sort{ |a, b| a.name <=> b.name } .each_with_index {|song,index|puts "#{index + 1}. #{song.artist.name} - #{song.name} - #{song.genre.name}"}
   end
-
-  def list_artists
-    Artist.all.each {|artist| puts artist.name}
+  
+def list_artists
+    Artist.all.sort{|a, b| a.name <=> b.name}.each_with_index do |artist, index|
+      puts "#{index+1}. #{artist.name}"
+    end
   end
 
   def list_genres
-    Genre.all.each {|genre| puts genre.name}
+    Genre.all.sort{|a, b| a.name <=> b.name}.each_with_index do |genre, index|
+      puts "#{index+1}. #{genre.name}"
+    end
   end
 
   def play_song
@@ -54,13 +57,14 @@ class MusicLibraryController
     puts "Playing #{song.artist.name} - #{song.name} - #{song.genre.name}"
   end
 
-  def list_artist
-    puts "Enter artist"
+  def list_songs_by_artist
+    puts "Please enter the name of an artist:"
     specific_artist = gets.chomp
     if Artist.find_by_name(specific_artist) != nil
-      Artist.find_by_name(specific_artist).songs.each {|song| puts "#{song.artist.name} - #{song.name} - #{song.genre.name}"}
+      Artist.find_by_name(specific_artist).songs.sort{|a, b| a.name <=> b.name}.each_with_index {|song,index| 
+      puts "#{index + 1}. #{song.name} - #{song.genre.name}"}
     else
-      puts "Artist does not exist"
+  #    puts "Artist does not exist"
     end
   end
 
